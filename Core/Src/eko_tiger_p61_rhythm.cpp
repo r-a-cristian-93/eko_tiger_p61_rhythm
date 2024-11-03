@@ -14,7 +14,7 @@ void eko_tiger_p61_rhythm_setup()
 {
 	HAL_I2S_Transmit_DMA(&hi2s1, (uint16_t *) audio_buff, BUFF_LEN);
 	sequencer_init();
-	sequencer_set_bpm(20);
+	sequencer_set_bpm(160);
 }
 
 __attribute((always_inline)) inline
@@ -29,10 +29,11 @@ void getSamples(uint32_t* output, uint16_t startFrame, uint16_t endFrame)
 		sample =  drum_machine_generate_sample();
 
 	    // +-32767 >> 8 = +-0x7FF
+//		sample = sample >> 4;
 		sample = sample >> 4;
 
 		// +-0x7FF + 0x7FF = 0_0xFFF
-		sample = sample + 0x4FFF;
+		sample = sample + 0x7FFF;
 
 		u_sample = (uint32_t) sample;
 

@@ -7,7 +7,7 @@
 #define TRACKS_COUNT (5)
 #define SEQUENCES_COUNT (8)
 #ifndef SAMPLE_RATE
-#define SAMPLE_RATE (44100)
+#define SAMPLE_RATE (44100.0)
 #endif
 
 extern const uint8_t* sequences[];
@@ -28,15 +28,15 @@ __attribute__((always_inline)) inline
 void sequencer_init()
 {
     sample_counter = 0;
-    sequencer_set_bpm(90);
-    sequencer_set_sequence(0);
+    sequencer_set_sequence(5);
+    sequencer_set_bpm(160);
 }
 
 __attribute__((always_inline)) inline
 void sequencer_set_bpm(uint32_t bpm)
 {
     // Assuming 16th notes
-    samples_per_step = (60 * SAMPLE_RATE) / (bpm * 4);
+    samples_per_step = (60.0 * SAMPLE_RATE) / (bpm * 4.0);
 }
 
 __attribute__((always_inline)) inline
