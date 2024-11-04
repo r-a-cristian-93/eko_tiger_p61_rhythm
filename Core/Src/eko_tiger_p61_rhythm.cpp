@@ -30,7 +30,7 @@ void getSamples(uint32_t* output, uint16_t startFrame, uint16_t endFrame)
 
 	    // +-32767 >> 8 = +-0x7FF
 //		sample = sample >> 4;
-		sample = sample >> 4;
+		sample = sample >> 7;
 
 		// +-0x7FF + 0x7FF = 0_0xFFF
 		sample = sample + 0x7FFF;
