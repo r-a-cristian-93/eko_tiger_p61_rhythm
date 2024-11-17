@@ -1,7 +1,7 @@
 #include "Sequencer.h"
 
 const uint8_t seq_waltz_length = 12;
-const uint8_t seq_waltz[] = {
+const uint8_t seq_waltz[seq_waltz_length * TRACKS_COUNT] = {
     // Rotated: 12x5
        0,   90,   37,    0,    0,
        0,    0,  127,    0,    0,
@@ -19,7 +19,7 @@ const uint8_t seq_waltz[] = {
 
 
 const uint8_t seq_tango_length = 32;
-const uint8_t seq_tango[] = {
+const uint8_t seq_tango[seq_tango_length * TRACKS_COUNT] = {
     // Rotated: 32x5
        0,  127,    0,    0,    0,
        0,    0,    0,    0,    0,
@@ -57,7 +57,7 @@ const uint8_t seq_tango[] = {
 
 
 const uint8_t seq_march_length = 32;
-const uint8_t seq_march[] = {
+const uint8_t seq_march[seq_march_length * TRACKS_COUNT] = {
     // Rotated: 32x5
        0,    0,  127,    0,    0,
        0,    0,    0,    0,    0,
@@ -95,7 +95,7 @@ const uint8_t seq_march[] = {
 
 
 const uint8_t seq_swing_length = 32;
-const uint8_t seq_swing[] = {
+const uint8_t seq_swing[seq_swing_length * TRACKS_COUNT] = {
        0,    0,  127,    0,    0,
       90,    0,   37,    0,    0,
        0,    0,    0,    0,    0,
@@ -125,11 +125,13 @@ const uint8_t seq_swing[] = {
        0,    0,    0,    0,    0,
        0,    0,    0,    0,    0,
        0,    0,    0,    0,    0,
-       0,  127,    0,    0,    0
+       0,  127,    0,    0,    0,
+       0,    0,    0,    0,    0,
+       0,    0,    0,    0,    0
 };
 
 const uint8_t seq_rock_length = 12;
-const uint8_t seq_rock[] = {
+const uint8_t seq_rock[seq_rock_length * TRACKS_COUNT] = {
        0,    0,  100,    0,    0,
        0,    0,  110,    0,    0,
        0,    0,  127,    0,    0,
@@ -145,7 +147,7 @@ const uint8_t seq_rock[] = {
 };
 
 const uint8_t seq_disco_length = 16;
-const uint8_t seq_disco[] = {
+const uint8_t seq_disco[seq_disco_length * TRACKS_COUNT] = {
      127,    0,    0,    0,    0,
        0,    0,    0,    0,    0,
        0,    0,  127,    0,    0,
@@ -158,14 +160,14 @@ const uint8_t seq_disco[] = {
        0,    0,    0,    0,    0,
        0,    0,    0,    0,    0,
        0,    0,    0,    0,    0,
-       0,  127,  127,    0,    0,
-       0,    0,    0,    0,    0,
-       0,    0,    0,    0,    0,
-       0,    0,    0,    0,    0
+       0,  127,  127,    0,    50,
+       0,    0,    0,    0,    40,
+       0,    0,    0,    0,    30,
+       0,    0,    0,    0,    10
 };
 
 const uint8_t seq_bossa_length = 16;
-const uint8_t seq_bossa[] = {
+const uint8_t seq_bossa[seq_bossa_length * TRACKS_COUNT] = {
       80,    0,   47,    0,    0,
        0,  127,  100,    0,    0,
        0,    0,  127,    0,    0,
@@ -185,7 +187,7 @@ const uint8_t seq_bossa[] = {
 };
 
 const uint8_t seq_samba_length = 16;
-const uint8_t seq_samba[] = {
+const uint8_t seq_samba[seq_samba_length * TRACKS_COUNT] = {
        0,    0,    0,  127,    0,
       90,    0,   37,    0,    0,
        0,    0,  127,    0,    0,

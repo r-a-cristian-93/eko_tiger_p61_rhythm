@@ -36,7 +36,7 @@ __attribute__((always_inline)) inline
 void sequencer_init()
 {
     sample_counter = 0;
-    sequencer_set_sequence(5);
+    sequencer_set_sequence(0);
     sequencer_set_bpm(160);
 }
 

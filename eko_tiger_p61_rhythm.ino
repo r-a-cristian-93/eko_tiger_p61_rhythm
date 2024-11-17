@@ -6,7 +6,7 @@
 // For STM32F411CEU6
 
 __attribute((always_inline)) inline
-bool areAllEqual(const uint16_t* array) {
+bool areAllEqual8(const uint16_t* array) {
     return (array[0] == array[1]) &&
            (array[1] == array[2]) &&
            (array[2] == array[3]) &&
@@ -16,11 +16,17 @@ bool areAllEqual(const uint16_t* array) {
            (array[6] == array[7]);
 }
 
+__attribute((always_inline)) inline
+bool areAllEqual4(const uint16_t* array) {
+    return (array[0] == array[1]) &&
+           (array[1] == array[2]) &&
+           (array[2] == array[3]);
+}
+
 // #if IS_STM32DUINO()
 #   define LED_BUILTIN PC13
 #   define MOZZI_AUDIO_PIN_1 PA8         // 32768Hz 3V pk-pk
-#   define AIN_RHYTHM_PIN PA7
-#   define AIN_TEMPO_PIN PA6
+#   define AIN_TEMPO_PIN PA7
 #   define DIN_WALTZ  PB3
 #   define DIN_TANGO  PB4
 #   define DIN_MARCH  PB5
@@ -55,6 +61,9 @@ void setup() {
   sequencer_set_bpm(160);
 
   pinMode(DIN_TO_BOOTLOADER, INPUT_PULLUP);
+
+  pinMode(AIN_TEMPO_PIN, INPUT_PULLUP);
+  analogReadResolution(12);
 
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(DIN_WALTZ, INPUT_PULLUP);
@@ -101,7 +110,7 @@ void handleRhythmButtons()
     rhythm_buttons_samples_counter = 0;
   }
 
-  if (areAllEqual(rhythm_buttons_samples) && (rhythm_buttons_samples[0] != rhythm_buttons_state))
+  if (areAllEqual8(rhythm_buttons_samples) && (rhythm_buttons_samples[0] != rhythm_buttons_state))
   {
     rhythm_buttons_state = (uint8_t) rhythm_buttons_samples[0];
 
@@ -136,7 +145,7 @@ void handleTrackButtons()
     track_buttons_samples_counter = 0;
   }
 
-  if (areAllEqual(track_buttons_samples) && (track_buttons_samples[0] != track_buttons_state))
+  if (areAllEqual8(track_buttons_samples) && (track_buttons_samples[0] != track_buttons_state))
   {
     track_buttons_state = track_buttons_samples[0];
 
@@ -146,6 +155,30 @@ void handleTrackButtons()
 
       sequencer_set_track_state(trackIndex, trackState);
     }
+  }
+}
+
+#define TEMPO_SAMPLES_COUNT (4)
+uint16_t tempo_control_samples[TEMPO_SAMPLES_COUNT] = {0};
+uint8_t tempo_control_samples_counter = 0;
+uint8_t tempo_control_state = 0;
+
+__attribute((always_inline)) inline
+void handleTempoControl()
+{
+  tempo_control_samples[tempo_control_samples_counter] = analogRead(AIN_TEMPO_PIN) >> 5;  // only 8 bits needed
+  tempo_control_samples_counter++;
+
+  if (tempo_control_samples_counter >= TEMPO_SAMPLES_COUNT)
+  {
+    tempo_control_samples_counter = 0;
+  }
+
+  if (areAllEqual4(tempo_control_samples) && tempo_control_samples[0] != tempo_control_state)
+  {
+    tempo_control_state = tempo_control_samples[0];
+
+    sequencer_set_bpm((tempo_control_state << 1) + 0x3F);
   }
 }
 
@@ -159,15 +192,17 @@ void handleJumpToBootloader()
 }
 
 void updateControl(){
-  handleIsAlive();
   handleRhythmButtons();
   handleTrackButtons();
+  handleTempoControl();
+
+  handleIsAlive();
   handleJumpToBootloader();
 }
 
 AudioOutput_t updateAudio(){
   sequencer_tick();
-	return MonoOutput::from16Bit(drum_machine_generate_sample() >> 2);
+	return MonoOutput::from16Bit(drum_machine_generate_sample() >> 3);
 }
 
 void loop(){
